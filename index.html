@@ -92,7 +92,7 @@ input[type=range]{width:100%;accent-color:#ff5fa2}
 </head>
 <body>
 <header>
-  <div class="logo">✦ Estudio de Moda ✦<small>Crea tu avatar y vístela como quieras</small></div>
+  <div class="logo">✦ Estudio de Moda ✦</div>
   <button class="b w" id="mute" title="Sonido">🔊</button>
 </header>
 
@@ -100,12 +100,12 @@ input[type=range]{width:100%;accent-color:#ff5fa2}
   <section class="stage">
     <div id="stage"></div>
     <div class="btns">
-      <button class="b y" id="bRand">🎲 Aleatorio</button>
+      <button class="b y" id="bRand"> Look Aleatorio</button>
       <button class="b v" id="bUndo">↩ Deshacer</button>
       <button class="b w" id="bClear">🧺 Quitar ropa</button>
-      <button class="b g" id="bPng">📸 Guardar foto</button>
-      <button class="b" id="bSave">⭐ Guardar look</button>
-      <button class="b v" id="bShare">🔗 Compartir</button>
+      <button class="b g" id="bPng">Guardar una foto</button>
+      <button class="b" id="bSave">Guardar look</button>
+      <button class="b v" id="bShare">Copiar enlace</button>
     </div>
   </section>
   <section class="panel">
@@ -453,7 +453,7 @@ const BG={
     ${Array.from({length:16},(_,i)=>`<circle cx="${-30+i*30}" cy="18" r="6" fill="${i%2?'#ffd166':'#ff8cc2'}"/><circle cx="${-30+i*30}" cy="18" r="11" fill="${i%2?'#ffd166':'#ff8cc2'}" opacity=".25"/>`).join('')}
     <path d="M140,560 L260,560 L380,830 L20,830Z" fill="#f3e9ff"/><path d="M200,560 L200,830" stroke="#ff8cc2" stroke-width="3" stroke-dasharray="14 10"/>${crowd}
     <rect x="-40" y="556" width="480" height="6" fill="#ff5fa2" opacity=".7"/>`}},
-  parque:{name:'Parque',draw:()=>`<defs><linearGradient id="skyP" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8fd3ff"/><stop offset="1" stop-color="#e8f8ff"/></linearGradient></defs>
+  parque:{name:'Universidad Nacional',draw:()=>`<defs><linearGradient id="skyP" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8fd3ff"/><stop offset="1" stop-color="#e8f8ff"/></linearGradient></defs>
     <rect x="-40" y="0" width="480" height="830" fill="url(#skyP)"/><circle cx="350" cy="90" r="40" fill="#fff3a3"/><circle cx="350" cy="90" r="56" fill="#fff3a3" opacity=".3"/>
     <g fill="#fff"><ellipse cx="60" cy="110" rx="50" ry="18"/><ellipse cx="90" cy="96" rx="30" ry="20"/><ellipse cx="230" cy="170" rx="42" ry="14"/><ellipse cx="250" cy="160" rx="24" ry="16"/></g>
     <path d="M-40,520 Q80,440 220,500 T440,470 L440,830 L-40,830Z" fill="#9edc84"/><path d="M-40,600 Q120,540 260,590 T440,570 L440,830 L-40,830Z" fill="#7ccb68"/>
@@ -597,8 +597,7 @@ function drawPanel(){
     <h3>Nariz</h3>${opts([['boton','Botón'],['recta','Recta'],['respingada','Respingada']],S.nose,'nose')}
     <h3>Boca</h3>${opts([['neutral','Neutral'],['sonrisa','Sonrisa'],['feliz','Feliz'],['beso','Beso']],S.mouth,'mouth')}
     <h3>Detalles</h3><div class="opts">${toggle(S.freckles,'freckles','Pecas')}${toggle(S.mole,'mole','Lunar')}</div>
-    <h3>Mi avatar</h3><button class="opt" id="bReset">↺ Volver a mi avatar original</button>
-    <h3>¿Quieres que se parezca a ti?</h3><div class="hint">Ve a la pestaña <b>📷 Mi foto</b>, sube tu foto y toca tu piel, tu cabello y tus ojos para copiar los colores exactos.</div>`;
+    <h3>Mi avatar</h3><button class="opt" id="bReset">↺ Volver a mi avatar original</button>`;
   }else if(tab==='maqui'){
     h=`<div class="ttl">Maquillaje</div>
     <h3>Labial</h3>${swatches(LIPS,S.lip,'lip')}
@@ -634,11 +633,11 @@ function drawColorBar(){
   const T=TABS.find(t=>t.id===tab),cb=$('#cbar');
   if(!T.slots){cb.hidden=true;return}
   const worn=T.slots.filter(k=>S[k]);
-  if(!worn.length){cb.hidden=false;cb.innerHTML=`<div class="lbl">🎨 Elige una prenda para cambiarle el color</div>`;return}
+  if(!worn.length){cb.hidden=false;cb.innerHTML=`<div class="lbl"> Elige una prenda para cambiarle el color</div>`;return}
   if(!editSlot||!worn.includes(editSlot))editSlot=worn[0];
   const cur=S[editSlot],it=ITEM[cur.id];
   cb.hidden=false;
-  cb.innerHTML=`<div class="lbl"><span>🎨 Color de: ${it.name}</span>${worn.length>1?`<span class="chips">${worn.map(k=>`<button class="chip ${k===editSlot?'on':''}" data-es="${k}">${ITEM[S[k].id].name}</button>`).join('')}</span>`:''}</div>
+  cb.innerHTML=`<div class="lbl"><span>Color de: ${it.name}</span>${worn.length>1?`<span class="chips">${worn.map(k=>`<button class="chip ${k===editSlot?'on':''}" data-es="${k}">${ITEM[S[k].id].name}</button>`).join('')}</span>`:''}</div>
   ${swatches(CLOTH_COLORS,cur.c,'itemC')}
   ${it.fab?`<div class="pats">${Object.entries(PATS).map(([k,n])=>`<button class="${(cur.p||'none')===k?'on':''}" data-pat="${k}" title="${n}"><svg viewBox="0 0 40 30"><defs>${patDefs('pp'+k)}</defs><rect width="40" height="30" fill="${cur.c}"/>${k!=='none'?`<rect width="40" height="30" fill="url(#pp${k}-p-${k})"/>`:''}</svg></button>`).join('')}</div>`:''}`;
 }
